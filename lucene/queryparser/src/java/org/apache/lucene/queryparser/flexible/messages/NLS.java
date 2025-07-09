@@ -39,37 +39,37 @@ import org.apache.lucene.util.CollectionUtil;
  *
  * <p>MessageBundle classes may subclass this type.
  */
-public class NLS {
+public class NLS{
 
-  private static final Map<String, Class<? extends NLS>> bundles = new HashMap<>(0);
+  private static final Map<String, Class<? extends NLS>> bundles=new HashMap<>(0);
 
   protected NLS() {
     // Do not instantiate
   }
 
-  public static String getLocalizedMessage(String key) {
+  public static String getLocalizedMessage(String key){
     return getLocalizedMessage(key, Locale.getDefault());
   }
 
-  public static String getLocalizedMessage(String key, Locale locale) {
-    Object message = getResourceBundleObject(key, locale);
-    if (message == null) {
-      return "Message with key:" + key + " and locale: " + locale + " not found.";
+  public static String getLocalizedMessage(String key,Locale locale) {
+    Object message=getResourceBundleObject(key, locale);
+    if (message==null) {
+      return "Message with key:"+key+" and locale: "+locale+" not found.";
     }
     return message.toString();
   }
 
-  public static String getLocalizedMessage(String key, Locale locale, Object... args) {
-    String str = getLocalizedMessage(key, locale);
+  public static String getLocalizedMessage(String key, Locale locale,Object... args) {
+    String str=getLocalizedMessage(key, locale);
 
-    if (args.length > 0) {
-      str = new MessageFormat(str, Locale.ROOT).format(args);
+    if (args.length>0) {
+      str=new MessageFormat(str, Locale.ROOT).format(args);
     }
 
     return str;
   }
 
-  public static String getLocalizedMessage(String key, Object... args) {
+  public static String getLocalizedMessage(String key,Object... args) {
     return getLocalizedMessage(key, Locale.getDefault(), args);
   }
 
@@ -80,7 +80,7 @@ public class NLS {
    * @param bundleName Property file with that contains the message bundle
    * @param clazz where constants will reside
    */
-  protected static void initializeMessages(String bundleName, Class<? extends NLS> clazz) {
+  protected static void initializeMessages(String bundleName,Class<? extends NLS> clazz) {
     try {
       load(clazz);
       bundles.putIfAbsent(bundleName, clazz);
@@ -92,16 +92,16 @@ public class NLS {
     }
   }
 
-  private static Object getResourceBundleObject(String messageKey, Locale locale) {
+  private static Object getResourceBundleObject(String messageKey,Locale locale) {
 
     // slow resource checking
     // need to loop thru all registered resource bundles
-    for (Class<? extends NLS> clazz : bundles.values()) {
-      ResourceBundle resourceBundle = ResourceBundle.getBundle(clazz.getName(), locale);
-      if (resourceBundle != null) {
+    for (Class<? extends NLS> clazz:bundles.values()) {
+      ResourceBundle resourceBundle=ResourceBundle.getBundle(clazz.getName(), locale);
+      if (resourceBundle!=null) {
         try {
-          Object obj = resourceBundle.getObject(messageKey);
-          if (obj != null) return obj;
+          Object obj=resourceBundle.getObject(messageKey);
+          if (obj!=null) return obj;
         } catch (
             @SuppressWarnings("unused")
             MissingResourceException e) {
@@ -114,27 +114,27 @@ public class NLS {
   }
 
   private static void load(Class<? extends NLS> clazz) {
-    final Field[] fieldArray = clazz.getDeclaredFields();
+    final Field[] fieldArray=clazz.getDeclaredFields();
 
     // build a map of field names to Field objects
-    final int len = fieldArray.length;
-    Map<String, Field> fields = CollectionUtil.newHashMap(len);
-    for (Field field : fieldArray) {
+    final int len=fieldArray.length;
+    Map<String, Field> fields=CollectionUtil.newHashMap(len);
+    for (Field field:fieldArray) {
       fields.put(field.getName(), field);
       loadfieldValue(field, clazz);
     }
   }
 
-  private static void loadfieldValue(Field field, Class<? extends NLS> clazz) {
-    int MOD_EXPECTED = Modifier.PUBLIC | Modifier.STATIC;
-    int MOD_MASK = MOD_EXPECTED | Modifier.FINAL;
-    if ((field.getModifiers() & MOD_MASK) != MOD_EXPECTED) return;
+  private static void loadfieldValue(Field field,Class<? extends NLS> clazz) {
+    int MOD_EXPECTED=Modifier.PUBLIC|Modifier.STATIC;
+    int MOD_MASK=MOD_EXPECTED|Modifier.FINAL;
+    if ((field.getModifiers()&MOD_MASK)!=MOD_EXPECTED) return;
 
     // Set a value for this empty field.
     try {
       field.set(null, field.getName());
       validateMessage(field.getName(), clazz);
-    } catch (@SuppressWarnings("unused") IllegalArgumentException | IllegalAccessException e) {
+    } catch (@SuppressWarnings("unused") IllegalArgumentException|IllegalAccessException e) {
       // should not happen
     }
   }
@@ -142,12 +142,12 @@ public class NLS {
   /**
    * @param key - Message Key
    */
-  private static void validateMessage(String key, Class<? extends NLS> clazz) {
+    private static void validateMessage(String key,Class<? extends NLS> clazz) {
     // Test if the message is present in the resource bundle
     try {
-      ResourceBundle resourceBundle =
+      ResourceBundle resourceBundle=
           ResourceBundle.getBundle(clazz.getName(), Locale.getDefault());
-      if (resourceBundle != null) {
+      if (resourceBundle!=null) {
         resourceBundle.getObject(key);
       }
     } catch (

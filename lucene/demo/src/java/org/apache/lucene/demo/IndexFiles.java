@@ -74,66 +74,66 @@ public class IndexFiles implements AutoCloseable {
   }
 
   /** Index all text files under a directory. */
-  public static void main(String[] args) throws Exception {
-    String usage =
+  public static void main(String[] args)throws Exception {
+    String usage=
         "java org.apache.lucene.demo.IndexFiles"
-            + " [-index INDEX_PATH] [-docs DOCS_PATH] [-update] [-knn_dict DICT_PATH]\n\n"
-            + "This indexes the documents in DOCS_PATH, creating a Lucene index "
-            + "in INDEX_PATH that can be searched with SearchFiles\n"
-            + "IF DICT_PATH contains a KnnVector dictionary, the index will also support KnnVector search";
-    String indexPath = "index";
-    String docsPath = null;
-    String vectorDictSource = null;
-    boolean create = true;
-    for (int i = 0; i < args.length; i++) {
+            +" [-index INDEX_PATH] [-docs DOCS_PATH] [-update] [-knn_dict DICT_PATH]\n\n"
+            +"This indexes the documents in DOCS_PATH, creating a Lucene index "
+            +"in INDEX_PATH that can be searched with SearchFiles\n"
+            +"IF DICT_PATH contains a KnnVector dictionary, the index will also support KnnVector search";
+    String indexPath="index";
+    String docsPath=null;
+    String vectorDictSource=null;
+    boolean create=true;
+    for (int i=0; i<args.length; i++) {
       switch (args[i]) {
         case "-index":
-          indexPath = args[++i];
+          indexPath=args[++i];
           break;
         case "-docs":
-          docsPath = args[++i];
+          docsPath=args[++i];
           break;
         case "-knn_dict":
-          vectorDictSource = args[++i];
+          vectorDictSource=args[++i];
           break;
         case "-update":
-          create = false;
+          create=false;
           break;
         case "-create":
-          create = true;
+          create=true;
           break;
         default:
-          throw new IllegalArgumentException("unknown parameter " + args[i]);
+          throw new IllegalArgumentException("unknown parameter "+args[i]);
       }
     }
 
-    if (docsPath == null) {
-      System.err.println("Usage: " + usage);
+    if (docsPath==null) {
+      System.err.println("Usage: "+usage);
       System.exit(1);
     }
 
-    final Path docDir = Paths.get(docsPath);
+    final Path docDir=Paths.get(docsPath);
     if (!Files.isReadable(docDir)) {
       System.out.println(
           "Document directory '"
-              + docDir.toAbsolutePath()
-              + "' does not exist or is not readable, please check the path");
+              +docDir.toAbsolutePath()
+              +"' does not exist or is not readable, please check the path");
       System.exit(1);
     }
 
-    Date start = new Date();
+    Date start=new Date();
     try {
-      System.out.println("Indexing to directory '" + indexPath + "'...");
+      System.out.println("Indexing to directory '"+indexPath+"'...");
 
-      Directory dir = FSDirectory.open(Paths.get(indexPath));
-      Analyzer analyzer = new StandardAnalyzer();
-      IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+      Directory dir=FSDirectory.open(Paths.get(indexPath));
+      Analyzer analyzer=new StandardAnalyzer();
+      IndexWriterConfig iwc=new IndexWriterConfig(analyzer);
 
       if (create) {
         // Create a new index in the directory, removing any
         // previously indexed documents:
         iwc.setOpenMode(OpenMode.CREATE);
-      } else {
+      }else {
         // Add new documents to an existing index:
         iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
       }
@@ -145,16 +145,16 @@ public class IndexFiles implements AutoCloseable {
       //
       // iwc.setRAMBufferSizeMB(256.0);
 
-      KnnVectorDict vectorDictInstance = null;
-      long vectorDictSize = 0;
-      if (vectorDictSource != null) {
+      KnnVectorDict vectorDictInstance=null;
+      long vectorDictSize=0;
+      if (vectorDictSource!=null) {
         KnnVectorDict.build(Paths.get(vectorDictSource), dir, KNN_DICT);
-        vectorDictInstance = new KnnVectorDict(dir, KNN_DICT);
-        vectorDictSize = vectorDictInstance.ramBytesUsed();
+        vectorDictInstance=new KnnVectorDict(dir, KNN_DICT);
+        vectorDictSize=vectorDictInstance.ramBytesUsed();
       }
 
-      try (IndexWriter writer = new IndexWriter(dir, iwc);
-          IndexFiles indexFiles = new IndexFiles(vectorDictInstance)) {
+      try (IndexWriter writer=new IndexWriter(dir, iwc);
+          IndexFiles indexFiles=new IndexFiles(vectorDictInstance)) {
         indexFiles.indexDocs(writer, docDir);
 
         // NOTE: if you want to maximize search performance,
@@ -168,24 +168,24 @@ public class IndexFiles implements AutoCloseable {
         IOUtils.close(vectorDictInstance);
       }
 
-      Date end = new Date();
-      try (IndexReader reader = DirectoryReader.open(dir)) {
+      Date end=new Date();
+      try (IndexReader reader=DirectoryReader.open(dir)) {
         System.out.println(
             "Indexed "
-                + reader.numDocs()
-                + " documents in "
-                + (end.getTime() - start.getTime())
-                + " ms");
-        if (Objects.isNull(vectorDictSource) == false
-            && reader.numDocs() > 100
-            && vectorDictSize < 1_000_000
-            && System.getProperty("smoketester") == null) {
+                +reader.numDocs()
+                +" documents in "
+                +(end.getTime()-start.getTime())
+                +" ms");
+        if (Objects.isNull(vectorDictSource)==false
+            &&reader.numDocs()>100
+            &&vectorDictSize<1_000_000
+            &&System.getProperty("smoketester")==null) {
           throw new RuntimeException(
               "Are you (ab)using the toy vector dictionary? See the package javadocs to understand why you got this exception.");
         }
       }
     } catch (IOException e) {
-      System.out.println(" caught a " + e.getClass() + "\n with message: " + e.getMessage());
+      System.out.println(" caught a "+e.getClass()+"\n with message: "+e.getMessage());
     }
   }
 

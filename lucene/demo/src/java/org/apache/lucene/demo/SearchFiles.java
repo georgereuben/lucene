@@ -46,112 +46,112 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.IOUtils;
 
 /** Simple command-line based search demo. */
-public class SearchFiles {
+public class SearchFiles{
 
   private SearchFiles() {}
 
   /** Simple command-line based search demo. */
-  public static void main(String[] args) throws Exception {
-    String usage =
+  public static void main(String[] args)throws Exception {
+    String usage=
         "Usage:\tjava org.apache.lucene.demo.SearchFiles [-index dir] [-field f] [-repeat n] [-queries file] [-query string] [-raw] [-paging hitsPerPage] [-knn_vector knnHits]\n\nSee http://lucene.apache.org/core/9_0_0/demo/ for details.";
-    if (args.length > 0 && ("-h".equals(args[0]) || "-help".equals(args[0]))) {
+    if (args.length>0&&("-h".equals(args[0])||"-help".equals(args[0]))) {
       System.out.println(usage);
       System.exit(0);
     }
 
-    String index = "index";
-    String field = "contents";
-    String queries = null;
-    int repeat = 0;
-    boolean raw = false;
-    int knnVectors = 0;
-    String queryString = null;
-    int hitsPerPage = 10;
+    String index="index";
+    String field="contents";
+    String queries=null;
+    int repeat=0;
+    boolean raw=false;
+    int knnVectors=0;
+    String queryString=null;
+    int hitsPerPage=10;
 
-    for (int i = 0; i < args.length; i++) {
+    for (int i=0; i<args.length; i++) {
       switch (args[i]) {
         case "-index":
-          index = args[++i];
+          index=args[++i];
           break;
         case "-field":
-          field = args[++i];
+          field=args[++i];
           break;
         case "-queries":
-          queries = args[++i];
+          queries=args[++i];
           break;
         case "-query":
-          queryString = args[++i];
+          queryString=args[++i];
           break;
         case "-repeat":
-          repeat = Integer.parseInt(args[++i]);
+          repeat=Integer.parseInt(args[++i]);
           break;
         case "-raw":
-          raw = true;
+          raw=true;
           break;
         case "-paging":
-          hitsPerPage = Integer.parseInt(args[++i]);
-          if (hitsPerPage <= 0) {
+          hitsPerPage=Integer.parseInt(args[++i]);
+          if (hitsPerPage<=0) {
             System.err.println("There must be at least 1 hit per page.");
             System.exit(1);
           }
           break;
         case "-knn_vector":
-          knnVectors = Integer.parseInt(args[++i]);
+          knnVectors=Integer.parseInt(args[++i]);
           break;
         default:
-          System.err.println("Unknown argument: " + args[i]);
+          System.err.println("Unknown argument: "+args[i]);
           System.exit(1);
       }
     }
 
-    DirectoryReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
-    IndexSearcher searcher = new IndexSearcher(reader);
-    Analyzer analyzer = new StandardAnalyzer();
-    KnnVectorDict vectorDict = null;
-    if (knnVectors > 0) {
-      vectorDict = new KnnVectorDict(reader.directory(), IndexFiles.KNN_DICT);
+    DirectoryReader reader=DirectoryReader.open(FSDirectory.open(Paths.get(index)));
+    IndexSearcher searcher=new IndexSearcher(reader);
+    Analyzer analyzer=new StandardAnalyzer();
+    KnnVectorDict vectorDict=null;
+    if (knnVectors>0) {
+      vectorDict=new KnnVectorDict(reader.directory(), IndexFiles.KNN_DICT);
     }
     BufferedReader in;
-    if (queries != null) {
-      in = Files.newBufferedReader(Paths.get(queries), StandardCharsets.UTF_8);
-    } else {
-      in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+    if (queries!=null) {
+      in=Files.newBufferedReader(Paths.get(queries), StandardCharsets.UTF_8);
+    }else {
+      in=new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
     }
-    QueryParser parser = new QueryParser(field, analyzer);
+    QueryParser parser=new QueryParser(field, analyzer);
     while (true) {
-      if (queries == null && queryString == null) { // prompt the user
+      if (queries==null&&queryString==null) { // prompt the user
         System.out.println("Enter query: ");
       }
 
-      String line = queryString != null ? queryString : in.readLine();
+      String line=queryString!=null ? queryString : in.readLine();
 
-      if (line == null || line.length() == -1) {
+      if (line==null||line.length()==-1) {
         break;
       }
 
-      line = line.trim();
-      if (line.length() == 0) {
+      line=line.trim();
+      if (line.length()==0) {
         break;
       }
 
-      Query query = parser.parse(line);
-      if (knnVectors > 0) {
-        query = addSemanticQuery(query, vectorDict, knnVectors);
+      Query query=parser.parse(line);
+      if (knnVectors>0) {
+        query=addSemanticQuery(query, vectorDict, knnVectors);
       }
-      System.out.println("Searching for: " + query.toString(field));
+      System.out.println("Searching for: "+query.toString(field));
 
-      if (repeat > 0) { // repeat & time as benchmark
-        Date start = new Date();
-        for (int i = 0; i < repeat; i++) {
+      if (repeat>0) { // repeat & time as benchmark
+        Date start=new Date();
+        for (int i=0; i<repeat; i++) {
           searcher.search(query, 100);
         }
-        Date end = new Date();
-        System.out.println("Time: " + (end.getTime() - start.getTime()) + "ms");
+        Date end=new Date();
+        System.out.println("Time: "+(end.getTime()-start.getTime())+"ms");
       }
 
-      doPagingSearch(in, searcher, query, hitsPerPage, raw, queries == null && queryString == null);
+      doPagingSearch(in, searcher, query, hitsPerPage, raw, queries==null&&queryString==null);
 
-      if (queryString != null) {
+      if (queryString!=null) {
         break;
       }
     }

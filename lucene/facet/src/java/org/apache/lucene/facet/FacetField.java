@@ -28,13 +28,13 @@ import org.apache.lucene.facet.taxonomy.TaxonomyWriter;
  * <p><b>NOTE:</b> you must call {@link FacetsConfig#build(Document)} before you add the document to
  * IndexWriter.
  */
-public class FacetField extends Field {
+public class FacetField extends Field{
 
   /**
    * Field type used for storing facet values. Actual field type used for indexing is determined in
    * {@link FacetsConfig#build(TaxonomyWriter, Document)}
    */
-  public static final FieldType TYPE = new FieldType();
+  public static final FieldType TYPE=new FieldType();
 
   /** Dimension for this field. */
   public final String dim;
@@ -43,22 +43,22 @@ public class FacetField extends Field {
   public final String[] path;
 
   /** Creates this from {@code dim} and {@code path}. */
-  public FacetField(String dim, String... path) {
+  public FacetField(String dim,String... path) {
     super("dummy", TYPE);
     verifyLabel(dim);
-    for (String label : path) {
+    for (String label:path) {
       verifyLabel(label);
     }
-    this.dim = dim;
-    if (path.length == 0) {
+    this.dim=dim;
+    if (path.length==0) {
       throw new IllegalArgumentException("path must have at least one element");
     }
-    this.path = path;
+    this.path=path;
   }
 
   @Override
-  public String toString() {
-    return "FacetField(dim=" + dim + " path=" + Arrays.toString(path) + ")";
+  public String toString(){
+    return "FacetField(dim="+dim+" path="+Arrays.toString(path)+")";
   }
 
   /**
@@ -66,9 +66,9 @@ public class FacetField extends Field {
    *
    * @lucene.internal
    */
-  public static void verifyLabel(String label) {
-    if (label == null || label.isEmpty()) {
-      throw new IllegalArgumentException("empty or null components not allowed; got: " + label);
+    public static void verifyLabel(String label) {
+    if (label==null||label.isEmpty()) {
+      throw new IllegalArgumentException("empty or null components not allowed; got: "+label);
     }
   }
 }
