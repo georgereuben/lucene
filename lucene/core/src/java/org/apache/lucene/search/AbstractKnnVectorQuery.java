@@ -52,7 +52,7 @@ import org.apache.lucene.util.FixedBitSet;
  *   <li>If the kNN search visits too many vectors without completing, stop and run an exact search
  * </ul>
  */
-abstract class AbstractKnnVectorQuery extends Query {
+abstract class AbstractKnnVectorQuery extends Query{
 
   private static final TopDocs NO_RESULTS = TopDocsCollector.EMPTY_TOPDOCS;
   // Constant controlling the degree of additional result exploration done during
