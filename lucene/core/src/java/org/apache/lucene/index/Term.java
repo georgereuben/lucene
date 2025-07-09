@@ -33,10 +33,10 @@ import org.apache.lucene.util.RamUsageEstimator;
  * <p>Note that terms may represent more than words from text fields, but also things like dates,
  * email addresses, urls, etc.
  */
-public final class Term implements Comparable<Term>, Accountable{
-  private static final long BASE_RAM_BYTES=
+public final class Term implements Comparable<Term>, Accountable {
+  private static final long BASE_RAM_BYTES =
       RamUsageEstimator.shallowSizeOfInstance(Term.class)
-          +RamUsageEstimator.shallowSizeOfInstance(BytesRef.class);
+          + RamUsageEstimator.shallowSizeOfInstance(BytesRef.class);
 
   String field;
   BytesRef bytes;
@@ -49,9 +49,9 @@ public final class Term implements Comparable<Term>, Accountable{
    *
    * <p>The provided BytesRef is copied when it is non null.
    */
-  public Term(String fld,BytesRef bytes) {
-    field=fld;
-    this.bytes = bytes==null ? null : BytesRef.deepCopyOf(bytes);
+  public Term(String fld, BytesRef bytes) {
+    field = fld;
+    this.bytes = bytes == null ? null : BytesRef.deepCopyOf(bytes);
   }
 
   /**
@@ -89,7 +89,7 @@ public final class Term implements Comparable<Term>, Accountable{
    * Returns the field of this term. The field indicates the part of a document which this term came
    * from.
    */
-  public String field(){
+  public String field() {
     return field;
   }
 

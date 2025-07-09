@@ -23,10 +23,10 @@ import java.util.Locale;
  * and their meanings is available here:
  * https://docs.google.com/spreadsheets/d/1-9blXKjtjeKZqsf4NzHeYJCrr49-nXeRF6D80udfcwY
  */
-public class POS{
+public class POS {
 
   /** The type of the token. */
-  public enum Type{
+  public enum Type {
     /** A simple morpheme. */
     MORPHEME,
 
@@ -41,147 +41,147 @@ public class POS{
   }
 
   /** Part of speech tag for Korean based on Sejong corpus classification. */
-  public enum Tag{
+  public enum Tag {
     /** Pre-final ending */
-    EP(100,"Pre-final ending"),
+    EP(100, "Pre-final ending"),
 
     /** Sentence-closing ending */
     EF(101, "Sentence-closing ending"),
 
     /** Connective ending */
-    EC(102,"Connective ending"),
+    EC(102, "Connective ending"),
 
     /** Nominal transformative ending */
     ETN(103, "Nominal transformative ending"),
 
     /** Adnominal form transformative ending */
-    ETM(104,"Adnominal form transformative ending"),
+    ETM(104, "Adnominal form transformative ending"),
 
     /** Interjection */
     IC(110, "Interjection"),
 
     /** Subject case marker */
-    JKS(120,"Subject case marker"),
+    JKS(120, "Subject case marker"),
 
     /** Complement case marker */
     JKC(121, "Complement case marker"),
 
     /** Adnominal case marker */
-    JKG(122,"Adnominal case marker"),
+    JKG(122, "Adnominal case marker"),
 
     /** Object case marker */
     JKO(123, "Object case marker"),
 
     /** Adverbial case marker */
-    JKB(124,"Adverbial case marker"),
+    JKB(124, "Adverbial case marker"),
 
     /** Vocative case marker */
     JKV(125, "Vocative case marker"),
 
     /** Quotative case marker */
-    JKQ(126,"Quotative case marker"),
+    JKQ(126, "Quotative case marker"),
 
     /** Auxiliary postpositional particle */
     JX(127, "Auxiliary postpositional particle"),
 
     /** Conjunctive postpositional particle */
-    JC(128,"Conjunctive postpositional particle"),
+    JC(128, "Conjunctive postpositional particle"),
 
     /** General Adverb */
     MAG(130, "General Adverb"),
 
     /** Conjunctive adverb */
-    MAJ(131,"Conjunctive adverb"),
+    MAJ(131, "Conjunctive adverb"),
 
     /** Determiner */
     MM(140, "Modifier"),
 
     /** General Noun */
-    NNG(150,"General Noun"),
+    NNG(150, "General Noun"),
 
     /** Proper Noun */
     NNP(151, "Proper Noun"),
 
     /** Dependent noun (following nouns) */
-    NNB(152,"Dependent noun"),
+    NNB(152, "Dependent noun"),
 
     /** Dependent noun */
     NNBC(153, "Dependent noun"),
 
     /** Pronoun */
-    NP(154,"Pronoun"),
+    NP(154, "Pronoun"),
 
     /** Numeral */
     NR(155, "Numeral"),
 
     /** Terminal punctuation (? ! .) */
-    SF(160,"Terminal punctuation"),
+    SF(160, "Terminal punctuation"),
 
     /** Chinese character */
     SH(161, "Chinese Characeter"),
 
     /** Foreign language */
-    SL(162,"Foreign language"),
+    SL(162, "Foreign language"),
 
     /** Number */
     SN(163, "Number"),
 
     /** Space */
-    SP(164,"Space"),
+    SP(164, "Space"),
 
     /** Closing brackets */
     SSC(165, "Closing brackets"),
 
     /** Opening brackets */
-    SSO(166,"Opening brackets"),
+    SSO(166, "Opening brackets"),
 
     /** Separator (· / :) */
     SC(167, "Separator"),
 
     /** Other symbol */
-    SY(168,"Other symbol"),
+    SY(168, "Other symbol"),
 
     /** Ellipsis */
     SE(169, "Ellipsis"),
 
     /** Adjective */
-    VA(170,"Adjective"),
+    VA(170, "Adjective"),
 
     /** Negative designator */
     VCN(171, "Negative designator"),
 
     /** Positive designator */
-    VCP(172,"Positive designator"),
+    VCP(172, "Positive designator"),
 
     /** Verb */
     VV(173, "Verb"),
 
     /** Auxiliary Verb or Adjective */
-    VX(174,"Auxiliary Verb or Adjective"),
+    VX(174, "Auxiliary Verb or Adjective"),
 
     /** Prefix */
     XPN(181, "Prefix"),
 
     /** Root */
-    XR(182,"Root"),
+    XR(182, "Root"),
 
     /** Adjective Suffix */
     XSA(183, "Adjective Suffix"),
 
     /** Noun Suffix */
-    XSN(184,"Noun Suffix"),
+    XSN(184, "Noun Suffix"),
 
     /** Verb Suffix */
     XSV(185, "Verb Suffix"),
 
     /** Unknown */
-    UNKNOWN(999,"Unknown"),
+    UNKNOWN(999, "Unknown"),
 
     /** Unknown */
     UNA(-1, "Unknown"),
 
     /** Unknown */
-    NA(-1,"Unknown"),
+    NA(-1, "Unknown"),
 
     /** Unknown */
     VSV(-1, "Unknown");
@@ -190,12 +190,12 @@ public class POS{
     private final String desc;
 
     /** Returns the code associated with the tag (as defined in pos-id.def). */
-    public int code(){
+    public int code() {
       return code;
     }
 
     /** Returns the description associated with the tag. */
-    public String description( ) {
+    public String description() {
       return desc;
     }
 
