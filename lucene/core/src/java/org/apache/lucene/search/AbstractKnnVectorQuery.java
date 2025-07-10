@@ -52,7 +52,7 @@ import org.apache.lucene.util.FixedBitSet;
  *   <li>If the kNN search visits too many vectors without completing, stop and run an exact search
  * </ul>
  */
-abstract class AbstractKnnVectorQuery extends Query {
+abstract class AbstractKnnVectorQuery extends Query{
 
   private static final TopDocs NO_RESULTS = TopDocsCollector.EMPTY_TOPDOCS;
   // Constant controlling the degree of additional result exploration done during
@@ -64,7 +64,7 @@ abstract class AbstractKnnVectorQuery extends Query {
   protected final Query filter;
   protected final KnnSearchStrategy searchStrategy;
 
-  AbstractKnnVectorQuery(String field, int k, Query filter, KnnSearchStrategy searchStrategy) {
+  AbstractKnnVectorQuery(String field, int k, Query filter, KnnSearchStrategy searchStrategy){
     this.field = Objects.requireNonNull(field, "field");
     this.k = k;
     if (k < 1) {
@@ -94,7 +94,7 @@ abstract class AbstractKnnVectorQuery extends Query {
       filterWeight = null;
     }
 
-    TimeLimitingKnnCollectorManager knnCollectorManager =
+    TimeLimitingKnnCollectorManager knnCollectorManager=
         new TimeLimitingKnnCollectorManager(
             getKnnCollectorManager(k, indexSearcher), indexSearcher.getTimeout());
     TaskExecutor taskExecutor = indexSearcher.getTaskExecutor();
