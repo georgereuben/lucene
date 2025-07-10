@@ -20,8 +20,8 @@ package org.apache.lucene.benchmark.jmh;
  * Just redirect to JMH so that the package is within the initially launched module, otherwise
  * {@code --module xyz} does not work.
  */
-public class Main{
-  public static void main(String[] args)throws Exception {
+public class Main {
+  public static void main(String[] args) throws Exception {
     org.openjdk.jmh.Main.main(args);
   }
 }
