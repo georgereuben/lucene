@@ -33,7 +33,7 @@ import java.io.IOException;
  * @see Directory#obtainLock(String)
  * @lucene.internal
  */
-public abstract class Lock implements Closeable {
+public abstract class Lock implements Closeable{
 
   /**
    * Releases exclusive access.
@@ -48,7 +48,7 @@ public abstract class Lock implements Closeable {
    *     properly released.
    */
   @Override
-  public abstract void close() throws IOException;
+  public abstract void close( )throws IOException;
 
   /**
    * Best effort check that this lock is still valid. Locks could become invalidated externally for
@@ -57,5 +57,5 @@ public abstract class Lock implements Closeable {
    *
    * @throws IOException if the lock is no longer valid.
    */
-  public abstract void ensureValid() throws IOException;
+    public abstract void ensureValid() throws IOException;
 }

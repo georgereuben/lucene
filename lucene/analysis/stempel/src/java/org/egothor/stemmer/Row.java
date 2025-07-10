@@ -64,10 +64,10 @@ import org.apache.lucene.internal.hppc.CharObjectHashMap;
 import org.apache.lucene.internal.hppc.ObjectCursor;
 
 /** The Row class represents a row in a matrix representation of a trie. */
-public class Row {
-  CharObjectHashMap<Cell> cells = new CharObjectHashMap<>();
-  int uniformCnt = 0;
-  int uniformSkip = 0;
+public class Row{
+  CharObjectHashMap<Cell> cells=new CharObjectHashMap<>();
+  int uniformCnt=0;
+  int uniformSkip=0;
 
   /**
    * Construct a Row object from input carried in via the given input stream.
@@ -75,14 +75,14 @@ public class Row {
    * @param is the input stream
    * @exception IOException if an I/O error occurs
    */
-  public Row(DataInput is) throws IOException {
-    for (int i = is.readInt(); i > 0; i--) {
-      char ch = is.readChar();
-      Cell c = new Cell();
-      c.cmd = is.readInt();
-      c.cnt = is.readInt();
-      c.ref = is.readInt();
-      c.skip = is.readInt();
+  public Row(DataInput is)throws IOException {
+    for (int i=is.readInt(); i>0; i--) {
+      char ch=is.readChar();
+      Cell c=new Cell();
+      c.cmd=is.readInt();
+      c.cnt=is.readInt();
+      c.ref=is.readInt();
+      c.skip=is.readInt();
       cells.put(ch, c);
     }
   }
@@ -96,7 +96,7 @@ public class Row {
    * @param old the Row to copy
    */
   public Row(Row old) {
-    cells = old.cells;
+    cells=old.cells;
   }
 
   /**
@@ -105,16 +105,16 @@ public class Row {
    * @param way the character defining the Cell
    * @param cmd the new command
    */
-  public void setCmd(char way, int cmd) {
-    Cell c = at(way);
-    if (c == null) {
-      c = new Cell();
-      c.cmd = cmd;
+  public void setCmd(char way,int cmd) {
+    Cell c=at(way);
+    if (c==null) {
+      c=new Cell();
+      c.cmd=cmd;
       cells.put(way, c);
-    } else {
-      c.cmd = cmd;
+    }else {
+      c.cmd=cmd;
     }
-    c.cnt = (cmd >= 0) ? 1 : 0;
+    c.cnt=(cmd>=0) ? 1 : 0;
   }
 
   /**
@@ -123,14 +123,14 @@ public class Row {
    * @param way the character defining the Cell
    * @param ref The new ref value
    */
-  public void setRef(char way, int ref) {
-    Cell c = at(way);
-    if (c == null) {
-      c = new Cell();
-      c.ref = ref;
+  public void setRef(char way,int ref) {
+    Cell c=at(way);
+    if (c==null) {
+      c=new Cell();
+      c.ref=ref;
       cells.put(way, c);
-    } else {
-      c.ref = ref;
+    }else {
+      c.ref=ref;
     }
   }
 
@@ -139,13 +139,13 @@ public class Row {
    *
    * @return the number of cells in use
    */
-  public int getCells() {
-    Iterator<CharCursor> i = cells.keys().iterator();
-    int size = 0;
-    for (; i.hasNext(); ) {
-      char c = i.next().value;
-      Cell e = at(c);
-      if (e.cmd >= 0 || e.ref >= 0) {
+  public int getCells(){
+    Iterator<CharCursor> i=cells.keys().iterator();
+    int size=0;
+    for (;i.hasNext();) {
+      char c=i.next().value;
+      Cell e=at(c);
+      if (e.cmd>=0||e.ref>=0) {
         size++;
       }
     }
@@ -158,12 +158,12 @@ public class Row {
    * @return the number of references
    */
   public int getCellsPnt() {
-    Iterator<CharCursor> i = cells.keys().iterator();
-    int size = 0;
-    for (; i.hasNext(); ) {
-      char c = i.next().value;
-      Cell e = at(c);
-      if (e.ref >= 0) {
+    Iterator<CharCursor> i=cells.keys().iterator();
+    int size=0;
+    for (; i.hasNext();) {
+      char c=i.next().value;
+      Cell e=at(c);
+      if (e.ref>=0) {
         size++;
       }
     }
@@ -175,13 +175,13 @@ public class Row {
    *
    * @return the number of patch commands
    */
-  public int getCellsVal() {
-    Iterator<CharCursor> i = cells.keys().iterator();
-    int size = 0;
-    for (; i.hasNext(); ) {
-      char c = i.next().value;
-      Cell e = at(c);
-      if (e.cmd >= 0) {
+    public int getCellsVal() {
+    Iterator<CharCursor> i=cells.keys().iterator();
+    int size=0;
+    for (; i.hasNext();) {
+      char c=i.next().value;
+      Cell e=at(c);
+      if (e.cmd>=0) {
         size++;
       }
     }
@@ -195,8 +195,8 @@ public class Row {
    * @return the command
    */
   public int getCmd(char way) {
-    Cell c = at(way);
-    return (c == null) ? -1 : c.cmd;
+    Cell c=at(way);
+    return (c==null) ? -1 : c.cmd;
   }
 
   /**
